@@ -1,0 +1,189 @@
+﻿@using IcBlog.Helper
+@using Microsoft.AspNetCore.Identity
+@using IcBlog.Infrastructure.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model BlogDetailsViewModel
+@{
+    ViewData["Title"] = "IC Blog Details";
+
+    var user = await UserManager.GetUserAsync(User);
+}
+
+<div class="heading-page header-text">
+    <section class="page-heading">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-content">
+                        <h4>Blog Details</h4>
+                        <h2>IC BLOG DETAILS</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<section class="blog-posts grid-system">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="all-blog-posts">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="blog-post">
+                                <div class="blog-thumb">
+                                    <img src="~/UserFiles/@( $"{AppUtilities.LocDau(Model.Blog.Author.FirstName)}{AppUtilities.LocDau(Model.Blog.Author.LastName)}")/@Model.Blog.BlogID/BlogImage.jpg" alt="">
+                                </div>
+                                <div class="down-content">
+                                    <span>@Model.Blog.Category.Name</span>
+                                    <h4>@Model.Blog.Title</h4></a>
+                                    <ul class="post-info">
+                                        <li><a href="#">@($"{Model.Blog.Author.FirstName} {Model.Blog.Author.LastName}")</a></li>
+                                        <li><a href="#">@Model.Blog.DateTime?.ToString("dd/MM/yyyy")</a></li>
+                                    </ul>
+                                    <p>@Html.Raw(Model.Blog.Content) </p>
+                                    <div class="post-options">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <ul class="post-tags">
+                                                    <li><i class="fa fa-tags"></i></li>
+                                                    <li><a href="#">@Model.Blog.Category.Name</a></li>
+
+                                                </ul>
+                                            </div>
+                                            <div class="col-6">
+                                                <ul class="post-share">
+                                                    <li><i class="fa fa-share-alt"></i></li>
+                                                    <li><a href="#">Facebook</a>,</li>
+                                                    <li><a href="#"> Twitter</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Hiển thị bình luận và trả lời -->
+                        <div class="col-lg-12">
+                            <div class="sidebar-item comments">
+                                <div class="sidebar-heading">
+                                    <h2> Bình luận</h2>
+                                </div>
+                                <div class="content">
+                                    <ul>
+                                        @if (Model.Blog.Comments != null && Model.Blog.Comments.Any())
+                                        {
+                                        @foreach(var comment in Model.Blog.Comments.Where(comment => comment.CommentParent is null))
+                                        {
+                                            <li>
+                                                <div class="author-thumb">
+                                                    <img src="assets/images/comment-author-01.jpg" alt="">
+                                                </div>
+                                                <div class="right-content">
+                                                    <h4>@comment.Author.FirstName @comment.Author.LastName<span>@comment.CreatedOn</span></h4>
+                                                    <p>@Html.Raw(comment.Content)</p>
+
+                                                    @if (user == null)
+                                                    {
+                                                            <a class="reply-btn btn" asp-area="Identity" asp-page="/Account/Login" asp-route-ReturnUrl="~/blog-details.html/@Model.Blog.BlogID">Login to reply</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="#" onclick="toggleReplyForm(@comment.Id); return false;">Reply</a>
+                                                    }
+                                                   
+                                                </div>
+                                            </li>
+                                        <li class="replied">
+                                            <div class="col-lg-12">
+                                               
+                                                <div id="reply-form-@comment.Id" style="display: none;">
+                                                    <div class="author-thumb">
+                                                        <img src="assets/images/comment-author-02.jpg" alt="">
+                                                    </div>
+
+                                                    <form asp-controller="Blog" asp-action="Comment" method="post">
+                                                        <input asp-for="Blog.BlogID" readonly hidden />
+                                                            <input asp-for="Comment.CommentParentID" value="@comment.Id" readonly hidden />
+                                                        <div class="form-group">
+                                                            <label for="comment">Write a reply</label>
+                                                            <textarea asp-for="Comment.Content" class="form-control" rows="3"></textarea>
+                                                            <button type="submit" class="btn btn-outline-primary post-btn">Post</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        
+                                       
+                                       <!-- Hiển thị danh sách các bình luận trả lời -->
+                                   @if (comment.Replies != null && comment.Replies.Any())
+                                    {
+                                      @foreach (var reply in comment.Replies)
+                                        {
+                                        <li class="replied">
+                                            <div class="author-thumb">
+                                                <img src="assets/images/comment-author-02.jpg" alt="">
+                                            </div>
+                                            <div class="right-content">
+                                          <h4>@reply.Author.FirstName @reply.Author.LastName<span>@reply.CreatedOn</span></h4>
+                                          <p>@Html.Raw(reply.Content)</p>
+                                              </div>
+                                        </li>
+                            
+                                        }
+                                     }
+
+                                      }
+                                      }
+                                  
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="sidebar-item submit-comment">
+                                <div class="sidebar-heading">
+                                    <h2>Your comment</h2>
+                                </div>
+                                <div class="content">
+                                    @if (user != null)
+                                    {
+                                        <form asp-controller="Blog" asp-action="Comment" method="post">
+                                            <input asp-for="Blog.BlogID" readonly hidden />
+                                            <div class="form-group">
+                                                <textarea asp-for="Comment.Content" class="form-control" rows="3"></textarea>
+                                                <button type="submit" class="btn btn-outline-primary post-btn">Post</button>
+                                            </div>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <a class="reply-btn btn" asp-area="Identity" asp-page="/Account/Login" asp-route-ReturnUrl="~/blog-details.html/@Model.Blog.BlogID">Login to Comment</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @section Scripts
+            {
+                <script>
+                    function toggleReplyForm(commentID) {
+                        var form = document.getElementById('reply-form-' + commentID);
+                        if (form) {
+                            if (form.style.display === 'none' || form.style.display === '') {
+                                form.style.display = 'block';
+                            } else {
+                                form.style.display = 'none';
+                            }
+                        } else {
+                            console.error('Element with ID reply-form-1 not found.');
+                        }
+                    }
+                </script>
+            }
+

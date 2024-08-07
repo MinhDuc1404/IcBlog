@@ -1,0 +1,82 @@
+﻿@model CreateBlogViewModel
+@{
+    Layout = "/Views/Shared/_UserLayout.cshtml";
+ 
+}
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <form asp-controller="Blog" asp-action="Create" method="post" enctype="multipart/form-data">
+                    <div class="card-header">
+                        <i class="fas fa-pen-fancy mr-1"></i>
+                        Write a Post
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Tiêu Đề</label>
+                            <input asp-for="Blog.Title" class="form-control" required />
+                            <span asp-validation-for="Blog.Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Ảnh</label>
+                            <div class="custom-file">
+                                <input asp-for="BlogImage" class="custom-file-input" accept="image/*" required />
+                                <label class="custom-file-label">Choose file</label>
+                            </div>
+                            <span asp-validation-for="BlogImage" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nội Dung</label>
+                            <textarea asp-for="Blog.Content" class="form-control textarea" rows="8" required ></textarea>
+                            <span asp-validation-for="Blog.Content" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Danh Mục</label>
+                            <select asp-for="Blog.CategoryID" class="form-control" asp-items="ViewBag.Categories">
+                                <option value="">-- Select Category --</option>
+                            </select>
+                        </div>
+                   
+                        <div class="form-group">
+                            <label>Hoặc tạo mới danh mục</label>
+                            <input asp-for="NewCategoryName" class="form-control"  />
+                            <span class="text-danger">@ViewData["CategoryExist"]</span>
+                        </div>
+                        <div>
+                            <span class="text-danger">@ViewData["CategoryID"]</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="submit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+             
+              
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.ckeditor.com/ckeditor5/21.0.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('.textarea'))
+           
+            .catch(error => {
+                console.error(error);
+            });
+      
+
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+  
+}

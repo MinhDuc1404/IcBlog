@@ -1,0 +1,78 @@
+﻿@{
+    Layout = "/Views/Shared/_UserLayout.cshtml";
+}
+@using IcBlog.Helper
+@model UserAccountViewModel
+
+@{
+    ViewData["Title"] = "User Information";
+    int i = 1;
+}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h2>@ViewData["Title"]</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-3 font-weight-bold">Full Name:</div>
+                <div class="col-md-9">@Model.UserAccount.FirstName @Model.UserAccount.LastName</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 font-weight-bold">Email:</div>
+                <div class="col-md-9">@Model.UserAccount.Email</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 font-weight-bold">Phone Number:</div>
+                <div class="col-md-9">@Model.UserAccount.PhoneNumber</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 font-weight-bold">Address:</div>
+                <div class="col-md-9">@Model.UserAccount.Address</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 font-weight-bold">Created Date:</div>
+                <div class="col-md-9">@Model.UserAccount.CreatedDate.ToString("f")</div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="container">
+    <div class="card-header bg-primary text-white">
+        <h2>Danh sách Blog</h2>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Ảnh</th>
+                <th>Tiêu đề</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Blogs)
+            {
+                <tr>
+                    <td>
+                        @(i++)
+                    </td>
+                    <td>
+                        <img src="~/UserFiles/@( $"{AppUtilities.LocDau(item.Author.FirstName)}{AppUtilities.LocDau(item.Author.LastName)}")/@item.BlogID/BlogImage.jpg" alt="Image" style="width: 100px; height: 100px;" />
+                    </td>
+                    <td><a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogID">@item.Title</a></td>
+                    <td>
+                        <form asp-action="Delete" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@item.BlogID" />
+                            <button type="submit" class="btn btn-danger">Xóa</button>
+                        </form>
+                        <a asp-controller="Blog" asp-action="Update" asp-route-id="@item.BlogID" class="btn btn-primary">Chỉnh sửa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
