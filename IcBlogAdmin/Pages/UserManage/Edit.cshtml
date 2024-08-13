@@ -1,0 +1,96 @@
+﻿@page
+@model IcBlogAdmin.Pages.UserManage.EditModel
+@using IcBlogAdmin.Pages.Helper
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<style>
+    .truncate-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Number of lines to display */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+    }
+</style>
+
+<h1>Edit</h1>
+
+<h4>User</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ApplicationUser.Id" />
+            <div class="form-group">
+                <label asp-for="ApplicationUser.FirstName" class="control-label"></label>
+                <input asp-for="ApplicationUser.FirstName" class="form-control" />
+                <span asp-validation-for="ApplicationUser.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationUser.LastName" class="control-label"></label>
+                <input asp-for="ApplicationUser.LastName" class="form-control" />
+                <span asp-validation-for="ApplicationUser.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationUser.CreatedDate" class="control-label"></label>
+                <input asp-for="ApplicationUser.CreatedDate" class="form-control" />
+                <span asp-validation-for="ApplicationUser.CreatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationUser.Address" class="control-label"></label>
+                <input asp-for="ApplicationUser.Address" class="form-control" />
+                <span asp-validation-for="ApplicationUser.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="margin-top: 30px">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<h4 style="margin-top:50px">Blogs by @Model.ApplicationUser.FirstName @Model.ApplicationUser.LastName</h4>
+
+@if (Model.Blogs != null && Model.Blogs.Any())
+{
+    <table class="table table-striped table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Category</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var blog in Model.Blogs)
+            {
+                <tr>
+                    <td>@blog.Title</td>
+                    <td class="truncate-text">@Html.Raw(StringExtensions.StripHtmlAndTruncate(blog.Content, 50))</td>
+                    <td>@blog.Category.Name</td>
+                    <td>
+                        <form method="post" asp-page-handler="Delete">
+                            <input type="hidden" name="BlogId" value="@blog.BlogID" />
+                            <button type="submit" class="btn btn-sm btn-danger mt-2">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>This user hasn't posted any blog.</p>
+}
+
+<div>
+    <button class="btn btn-primary">
+        <a asp-page="./UserManage" style="text-decoration: none; color: white;">Back to List</a>
+    </button>
+</div>

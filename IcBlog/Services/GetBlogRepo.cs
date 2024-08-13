@@ -130,7 +130,7 @@ namespace IcBlog.Services
 
             var blog = await _blogServices.GetBlogAsync(blogDetails.Blog.BlogID);
 
-            var comment = blogDetails.Comment;
+            Comment comment = blogDetails.Comment;
             comment.Author = await _userManager.GetUserAsync(claimsPrincipal);
             comment.CreatedOn = DateTime.Now;
             comment.Blog = blog;
