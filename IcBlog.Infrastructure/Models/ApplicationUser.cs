@@ -17,5 +17,7 @@ namespace IcBlog.Infrastructure.Models
         public string Address { get; set; } = "";
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
+   
+
     }
 }

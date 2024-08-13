@@ -32,6 +32,7 @@ namespace IcBlog
             builder.Services.AddScoped<ICategoryServices, CategoryServices>();
 
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IProfilePictureService, ProfilePictureService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

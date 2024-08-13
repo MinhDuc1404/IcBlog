@@ -111,6 +111,7 @@ namespace IcBlog.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BlogID"));
 
                     b.Property<string>("AuthorId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("CategoryID")
@@ -163,7 +164,11 @@ namespace IcBlog.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AuthorId")
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AuthorID")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("BlogID")
@@ -181,7 +186,9 @@ namespace IcBlog.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("AuthorID");
 
                     b.HasIndex("BlogID");
 
@@ -215,6 +222,20 @@ namespace IcBlog.Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "91aa1632-c008-4678-8cfa-2a9bebb0affa",
+                            Name = "admin",
+                            NormalizedName = "admin"
+                        },
+                        new
+                        {
+                            Id = "6aa59986-9f59-4782-9eb2-64f687051d8c",
+                            Name = "user",
+                            NormalizedName = "user"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -331,7 +352,9 @@ namespace IcBlog.Infrastructure.Migrations
                 {
                     b.HasOne("IcBlog.Infrastructure.Models.ApplicationUser", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("IcBlog.Infrastructure.Models.Category", "Category")
                         .WithMany("Blogs")
@@ -344,19 +367,26 @@ namespace IcBlog.Infrastructure.Migrations
 
             modelBuilder.Entity("IcBlog.Infrastructure.Models.Comment", b =>
                 {
+                    b.HasOne("IcBlog.Infrastructure.Models.ApplicationUser", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("IcBlog.Infrastructure.Models.ApplicationUser", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("AuthorID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("IcBlog.Infrastructure.Models.Blog", "Blog")
                         .WithMany("Comments")
                         .HasForeignKey("BlogID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IcBlog.Infrastructure.Models.Comment", "CommentParent")
                         .WithMany("Replies")
-                        .HasForeignKey("CommentParentID");
+                        .HasForeignKey("CommentParentID")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Author");
 
@@ -414,6 +444,11 @@ namespace IcBlog.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("IcBlog.Infrastructure.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("IcBlog.Infrastructure.Models.Blog", b =>

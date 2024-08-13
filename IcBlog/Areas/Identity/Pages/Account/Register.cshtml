@@ -7,7 +7,7 @@
 <h1>@ViewData["Title"]</h1>
 
 
-<form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+<form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
     <div class="row">
         <div class="col-md-4">
             <h4>Create a new account.</h4>
@@ -28,11 +28,10 @@
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary">Register</button>
-
         </div>
         <div class="col-md-6 col-md-offset-2">
             <section>
-                <h4>Who are ya?</h4>
+                <h4>Who are you?</h4>
                 <hr />
                 <div class="form-floatting mb-3">
                     <label asp-for="Input.FirstName"></label>
@@ -49,6 +48,11 @@
                     <label asp-for="Input.Address"></label>
                     <input asp-for="Input.Address" class="form-control" />
                     <span asp-validation-for="Input.Address" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <label asp-for="Input.ProfilePicture"></label>
+                    <input asp-for="Input.ProfilePicture" type="file" class="form-control" />
+                    <span asp-validation-for="Input.ProfilePicture" class="text-danger"></span>
                 </div>
 
             </section>

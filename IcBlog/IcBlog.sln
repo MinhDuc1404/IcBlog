@@ -5,7 +5,9 @@ VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IcBlog", "IcBlog.csproj", "{22E01C42-FAD8-496C-A8DC-CB793923578A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IcBlog.Infrastructure", "..\IcBlog.Infrastructure\IcBlog.Infrastructure.csproj", "{FDEC04DE-BFA6-43F7-A1B7-C50CE6234730}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IcBlog.Infrastructure", "..\IcBlog.Infrastructure\IcBlog.Infrastructure.csproj", "{FDEC04DE-BFA6-43F7-A1B7-C50CE6234730}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IcBlogAdmin", "..\IcBlogAdmin\IcBlogAdmin.csproj", "{2FBC1655-7BBE-4E29-BF5A-FF1910F804FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{FDEC04DE-BFA6-43F7-A1B7-C50CE6234730}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDEC04DE-BFA6-43F7-A1B7-C50CE6234730}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDEC04DE-BFA6-43F7-A1B7-C50CE6234730}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FBC1655-7BBE-4E29-BF5A-FF1910F804FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FBC1655-7BBE-4E29-BF5A-FF1910F804FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FBC1655-7BBE-4E29-BF5A-FF1910F804FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FBC1655-7BBE-4E29-BF5A-FF1910F804FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

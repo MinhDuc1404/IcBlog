@@ -21,5 +21,10 @@ namespace IcBlog.Infrastructure.Services
         {
             return await _context.Users.FindAsync(userId);
         }
+
+        public async Task<IdentityResult> UpdateUserAsync(ApplicationUser user)
+        {
+            return await _userManager.UpdateAsync(user);
+        }
     }
 }
