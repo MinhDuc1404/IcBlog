@@ -413,8 +413,9 @@ header .navbar {
 .blog-posts .down-content {
 	padding: 40px;
 	border-right: 1px solid #eee;
-	border-left: 1px solid #eee;
-	border-bottom: 1px solid #eee;
+/*	border-left: 1px solid #eee;
+	border-bottom: 1px solid #eee;*/
+	width: 100%;
 }
 
 .blog-posts .down-content span {
@@ -474,16 +475,12 @@ header .navbar {
 }
 
 .blog-posts .down-content p {
-	padding: 25px 0px;
-	margin: 25px 0px;
-	border-top: 1px solid #eee;
-	border-bottom: 1px solid #eee;
-	overflow-wrap: break-word;
+	padding: 5px 0px;
+	margin: 5px 0px;
 	word-wrap: break-word; /* Old name for overflow-wrap */
-	white-space: pre-line; /* Allows for line breaks within the text */
 	max-width: 100%; /* Đảm bảo phần tử không vượt quá kích thước của phần tử cha */
 	box-sizing: border-box; /* Đảm bảo padding và border được tính vào kích thước tổng thể */
-	float: left;
+
 }
 
 
