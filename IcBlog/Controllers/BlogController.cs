@@ -96,7 +96,7 @@ namespace IcBlog.Controllers
         [HttpPost]
         public async Task<IActionResult> Comment(BlogDetailsViewModel blogDetails)
         {
-            var result = await _blogRepo.CreateComment(blogDetails,User);
+            var result = await _blogRepo.CreateComment(blogDetails, User);
             if (result == null)
             {
                 return RedirectToAction("Details", new { blogDetails.Blog.BlogID });

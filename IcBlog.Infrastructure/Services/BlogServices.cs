@@ -48,6 +48,10 @@ namespace IcBlog.Infrastructure.Services
                  .Include(b => b.Category) // Bao gồm Category
                  .Include(b => b.Author)   // Bao gồm Author
                   .Include(b => b.Comments)
+                  .ThenInclude(b => b.Author)
+                  .Include(b => b.Comments)
+                  .ThenInclude(b=> b.Replies)
+                  .ThenInclude(r => r.Author)
                 .FirstOrDefaultAsync(b => b.BlogID == id);
         }
         public async Task<Blog> AddBlog(Blog blog)

@@ -4,14 +4,14 @@
 @{
     ViewData["Title"] = "IC Home";
 }
-<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="5000">
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="4000">
 	<div class="carousel-inner">
 		@foreach (var item in Model.Blogs)
 		{
 			var isActive = item == Model.Blogs.First() ? "active" : "";
 			<div class="carousel-item @isActive">
 				<div class="overlay-container">
-					<img class="d-block w-100" src="~/UserFiles/@($"{AppUtilities.LocDau(item.Author.FirstName)}{AppUtilities.LocDau(item.Author.LastName)}")/@item.BlogID/BlogImage.jpg" height="450px" alt="Blog Image">
+					<img class="d-block w-100" src="~/UserFiles/@($"{AppUtilities.LocDau(item.Author.FirstName)}{AppUtilities.LocDau(item.Author.LastName)}")/@item.BlogID/BlogImage.jpg" height="520px" alt="Blog Image">
 					<div class="overlay"></div>
 					<div class="carousel-caption d-none d-md-block">
 						<!-- Phần thông tin danh mục (lên đầu) -->
@@ -21,7 +21,13 @@
 							</a>
 						</div>
 						<a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogID"><h5>@item.Title</h5> </a>
-						<p>@Html.Raw(AppUtilities.ConvertHtmlToPlainText(item.Content.Substring(0,200)) + "...")</p>
+						<p>@Html.Raw(AppUtilities.ConvertHtmlToPlainText(item.Content.Substring(0,300)) + "...")</p>
+						<div class="carousel-author-item" style="line-height:25px">
+							<a>
+								<img  style="width:24px; height:24px; margin: 0px 5px 0px 0px; float:left; border-radius:50%;" src="~/UserFiles/@item.Author.Id/ProfilePicture.jpg" />
+								@item.Author.FirstName @item.Author.LastName
+							</a>
+							</div>
 					</div>
 				</div>
 			</div>
@@ -36,7 +42,7 @@
 		<span class="sr-only">Next</span>
 	</a>
 </div>
-<section class="section blog-wrap bg-gray">
+<section class="section blog-wrap bg-gray" style="padding: 40px 0">
 	<div class="container-fluid">
 		<div class="row">
 			@if(Model.Blogs != null && Model.Blogs.Any())
@@ -54,7 +60,7 @@
 									<a asp-controller="Blog" asp-action="Index" asp-route-category="@item.CategoryID">@item.Category.Name</a>
 								</div>
 							</div>
-					<div class="blog-item-content bg-white p-5">
+					<div class="blog-item-content bg-white p-5" style="height:180px">
 					<h3 style="line-height: 28px; font-size:1.3rem;" class="mt-3 mb-3"><a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogID">@item.Title</a></h3>
 						<div class="blog-item-meta py-1">
 							<span class="text-muted text-capitalize mr-3"><i class="ti-pencil-alt mr-2"></i>@($"{item.Author.FirstName} {item.Author.LastName}")</span>

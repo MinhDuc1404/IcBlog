@@ -10,25 +10,27 @@
     if (user != null)
     {
         <li class="nav-item">
-            <a class="nav-link" asp-controller="UserAccount" asp-action="Index"> @($"{user.FirstName} {user.LastName}!")</a>
+            <a class="nav-link" asp-controller="UserAccount" asp-action="Index">
+                <img style=" width:30px;height:30px;position:relative;bottom:5px;border-radius:50%;" src="~/UserFiles/@user.Id/ProfilePicture.jpg" />
+            </a>
         </li>
     }
     else
     {
         <li class="nav-item">
-            <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Đăng ký</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Đăng nhập</a>
         </li>
     }
 }
 else
 {
     <li class="nav-item">
-        <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Đăng ký</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Đăng nhập</a>
     </li>
 }

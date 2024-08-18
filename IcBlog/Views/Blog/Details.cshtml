@@ -19,7 +19,7 @@
                     <span class="text-white">IC blog</span>
                     <h1 class="text-capitalize mb-4 text-lg">Blog Details</h1>
                     <ul class="list-inline">
-                        <li class="list-inline-item"><a href="index.html" class="text-white">Home</a></li>
+                        <li class="list-inline-item"><a href="/" class="text-white">Home</a></li>
                         <li class="list-inline-item"><span class="text-white">/</span></li>
                         <li class="list-inline-item"><a href="#" class="text-white-50">Blog Details</a></li>
                     </ul>
@@ -78,7 +78,7 @@
                                             <div class="comment-meta mt-4 mt-lg-0 mt-md-0 float-lg-right float-md-right">
                                             @if (user == null)
                                             {
-                                                <a class="reply-btn btn" asp-area="Identity" asp-page="/Account/Login" asp-route-ReturnUrl="~/Blog/Details/@Model.Blog.BlogID">Login to reply</a>
+                                                    <a class="reply-btn btn" asp-area="Identity" asp-page="/Account/Login" asp-route-ReturnUrl="~/blog-details.html/@Model.Blog.BlogID">Login to reply</a>
                                             }
                                             else
                                             {
@@ -117,10 +117,10 @@
                                                 <div class="comment-area-box">
                                                     <img alt="" src="images/blog/test1.jpg" class="img-author float-left mr-3 mt-2">
 
-                                                    <h5 class="mb-1">@($"{item.Author.FirstName} {item.Author.LastName}")</h5>
+                                                    <h5 class="mb-1">@($"{reply.Author.FirstName} {reply.Author.LastName}")</h5>
 
                                                     <div class="comment-content mt-3">
-                                                        <p style="margin-left: 50px;">@Html.Raw(item.Content)</p>
+                                                        <p style="margin-left: 50px;">@Html.Raw(reply.Content)</p>
                                                     </div>
                                             </li>
 
@@ -153,9 +153,8 @@
                  @await Component.InvokeAsync("SideBar")
                     </div>
                   </div>
-                 </div>
-             </div>
-
+     </section>          
+        
             @section Scripts
             {
                 <script>

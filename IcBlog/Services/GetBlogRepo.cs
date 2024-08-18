@@ -138,6 +138,7 @@ namespace IcBlog.Services
             if (comment.CommentParent != null)
             {
                 comment.CommentParent = await _blogServices.GetCommentAsync(comment.CommentParent.Id);
+                comment.Replies.Add(comment);
             }    
             await _blogServices.AddComment(comment);
   
