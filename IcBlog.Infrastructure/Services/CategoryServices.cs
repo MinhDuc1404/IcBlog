@@ -44,5 +44,10 @@ namespace IcBlog.Infrastructure.Services
             return await _blogContext.Categories
                 .AnyAsync(c => c.Name.ToLower() == normalizedCategoryName);
         }
+        public async Task<Category> GetCategoryByNameAsync(string name)
+        {
+            return await _blogContext.Categories
+                .FirstOrDefaultAsync(c => c.Name == name);
+        }
     }
 }

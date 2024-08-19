@@ -17,5 +17,6 @@ namespace IcBlog.Infrastructure.Services.Interface
         Task<Category> AddCategory(Category category);
 
         Task<bool> DoesCategoryExistAsync(string categoryName);
+        Task<Category> GetCategoryByNameAsync(string name);
     }
 }

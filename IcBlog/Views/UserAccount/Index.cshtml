@@ -48,7 +48,7 @@
     <div class="row">
         @foreach (var item in Model.Blogs)
         {
-            <div class="col-xl-3 col-md-6 mb-4">
+            <div class="col-xl-4 col-md-6 mb-4">
                 <div class="card border-0 shadow">
                     <img src="~/UserFiles/@($"{AppUtilities.LocDau(item.Author.FirstName)}{AppUtilities.LocDau(item.Author.LastName)}")/@item.BlogID/BlogImage.jpg" class="card-img-top">
                     <div class="card-body">
@@ -56,8 +56,8 @@
                             <div><h5 class="card-title mb-0">@item.Title</h5></div>
                         </div>
                         <div class="row ml-0">
-                            <div><i class="fas fa-calendar-alt" style="color: gray"></i></div>
-                            <p class="text-muted ml-3 mb-0">Last updated on: @item.DateTime?.ToString()</p>
+                            <div><i class="fas fa-calendar-alt" style="color: gray"></i><p class="text-muted ml-3 mb-0">Last updated on: @item.DateTime?.ToString()</p></div>
+                    
                         </div>
                         <div class="row ml-0" style="bottom: 0;">
                             <div><i class="fas fa-comment" style="color: gray"></i></div>

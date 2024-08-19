@@ -22,8 +22,15 @@ namespace IcBlog
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
-                .AddEntityFrameworkStores<BlogContext>();
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+            }).AddEntityFrameworkStores<BlogContext>();
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IBlogServices,BlogServices>();
             builder.Services.AddScoped<IGetBlogRepo,GetBlogRepo>();

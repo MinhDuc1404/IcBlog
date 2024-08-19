@@ -527,7 +527,20 @@ kbd kbd {
   font-size: 100%;
   font-weight: 700;
 }
+label .custom-file-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 15px;
+  background-color: #f8f9fa;
+  color: #007bff;
+  border-radius: 4px;
+}
 
+.custom-file-upload:hover {
+  background-color: #e2e6ea;
+}
 pre {
   display: block;
   font-size: 87.5%;

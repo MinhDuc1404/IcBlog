@@ -72,23 +72,24 @@
                                 {
                                     <li class="mb-5">
                                         <div class="comment-area-box">
-                                            <img alt="" src="images/blog/test1.jpg" class="img-author float-left mr-3 mt-2">
+                                            <img style="width:55px;height:55px" src="~/UserFiles/@item.AuthorID/ProfilePicture.jpg" class="img-author float-left mr-3">
 
                                             <h5 class="mb-1">@($"{item.Author.FirstName} {item.Author.LastName}")</h5>
-                                            <div class="comment-meta mt-4 mt-lg-0 mt-md-0 float-lg-right float-md-right">
-                                            @if (user == null)
-                                            {
-                                                    <a class="reply-btn btn" asp-area="Identity" asp-page="/Account/Login" asp-route-ReturnUrl="~/blog-details.html/@Model.Blog.BlogID">Login to reply</a>
-                                            }
-                                            else
-                                            {
-                                                    <a href="javascript:void(0);" onclick="toggleReplyForm(@item.Id)"><i class="icofont-reply mr-2 text-muted"></i>Reply |</a>
-                                            }
-                  
-                                            </div>
+                                       
 
                                             <div class="comment-content mt-3">
-                                                <p style="margin-left: 50px;">@Html.Raw(item.Content)</p>
+                                                <p style="margin-left: 70px;position:relative;bottom:15px">@Html.Raw(item.Content)</p>
+                                            </div>
+                                            <div class="comment-meta mt-4 mt-lg-0 mt-md-0 float-lg-left float-md-left">
+                                                @if (user == null)
+                                                {
+                                                    <a class="reply-btn btn" asp-area="Identity" asp-page="/Account/Login" asp-route-ReturnUrl="~/blog-details.html/@Model.Blog.BlogID">Login to reply</a>
+                                                }
+                                                else
+                                                {
+                                                    <a style="color:#4267b2;position: relative;bottom: 20px;margin-left: 63px;font-size:15px;font-weight:600" href="javascript:void(0);" onclick="toggleReplyForm(@item.Id)"><i class="icofont-reply mr-2 text-muted"></i>Phản hồi</a>
+                                                }
+
                                             </div>
                                             <!-- Reply Form -->
                                             @if (user != null)
@@ -154,8 +155,7 @@
                     </div>
                   </div>
      </section>          
-        
-            @section Scripts
+  @section Scripts
             {
                 <script>
                     function toggleReplyForm(commentID) {
