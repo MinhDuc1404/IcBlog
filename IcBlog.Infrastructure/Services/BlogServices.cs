@@ -64,7 +64,9 @@ namespace IcBlog.Infrastructure.Services
         public async Task<List<Blog>> GetblogByUserIDAsync(string userID)
         {
             return await _blogContext.Blogs
-                .Where(b => b.Author.Id == userID)
+				 .Include(b => b.Category)
+				.Include(b => b.Author)
+				.Where(b => b.Author.Id == userID)
                 .OrderByDescending(b=>b.DateTime)
                 .ToListAsync();
         }

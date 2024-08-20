@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 using IcBlog.Helper;
 using Microsoft.AspNetCore.Authorization;
+using IcBlog.Infrastructure.Services;
 
 namespace IcBlog.Services
 {
@@ -171,6 +172,14 @@ namespace IcBlog.Services
             };
           
         }
+        public async Task<BlogAuthorViewModel> GetAuthorView(string id)
+        {
+			var blog = await _blogServices.GetblogByUserIDAsync(id);
+            return new BlogAuthorViewModel
+            {
+                Blogs = blog
+            };
+		}
         private void EnsureFolder(string path)
         {
             string directoryName = Path.GetDirectoryName(path);

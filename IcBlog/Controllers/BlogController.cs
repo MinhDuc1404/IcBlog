@@ -113,5 +113,9 @@ namespace IcBlog.Controllers
             }
             return RedirectToAction("Details", new { id = result.Blog.BlogID });
         }
-    }
+		public async Task<IActionResult> Author(string id)
+		{
+			return View(await _blogRepo.GetAuthorView(id));
+		}
+	}
 }
