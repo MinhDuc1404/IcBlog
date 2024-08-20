@@ -1,0 +1,160 @@
+﻿@page
+@model IcBlogAdmin.Pages.UserManage.StatisticsModel
+@using System.Text.Json
+@{
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Fixed size chart container */
+        .chart-container {
+            position: relative;
+            width: 80%; /* Fixed width percentage */
+            max-width: 800px; /* Maximum width */
+            margin: 0 auto;
+        }
+
+        /* Fixed canvas size */
+        canvas {
+            width: 100% !important; /* Full width of the container */
+            height: 300px !important; /* Fixed height */
+        }
+    </style>
+</head>
+<body>
+
+    <h2 style="text-align: center; font-weight: 300;">Account Creation by Day</h2>
+
+    <div class="chart-container">
+        <canvas id="accountChart"></canvas>
+    </div>
+
+    <h2 style="text-align: center; font-weight: 300;">Login Attempts by Day</h2>
+
+    <div class="chart-container">
+        <canvas id="loginChart"></canvas>
+    </div>
+
+    <script>
+        // Ensure the data is passed correctly as JSON
+        var dates = @Html.Raw(JsonSerializer.Serialize(Model.Dates));
+        var accountCounts = @Html.Raw(JsonSerializer.Serialize(Model.AccountCounts));
+        var loginCounts = @Html.Raw(JsonSerializer.Serialize(Model.LoginCount));
+
+        // Chart for account creations
+        var ctx1 = document.getElementById('accountChart').getContext('2d');
+        var accountChart = new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: dates, // Dates from the model
+                datasets: [{
+                    label: 'Accounts Created',
+                    data: accountCounts, // Account counts
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Softer background color
+                    borderColor: 'rgba(75, 192, 192, 1)', // Softer border color
+                    borderWidth: 1, // Thinner border
+                    tension: 0.3, // Smoother line curves
+                    pointRadius: 5, // Slightly larger point radius
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true, // Enable responsiveness
+                maintainAspectRatio: false, // Allow chart to resize within fixed dimensions
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date',
+                            color: '#666', // Softer text color
+                        },
+                        ticks: {
+                            autoSkip: true, // Automatically skip labels if too crowded
+                            maxRotation: 45, // Rotate labels if needed
+                            minRotation: 30 // Minimum rotation to avoid overlap
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Number of Accounts Created',
+                            color: '#666', // Softer text color
+                        },
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1, // Ensure the gap between ticks is 1
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false // Hide the legend for a cleaner look
+                    }
+                }
+            }
+        });
+
+        // Chart for login attempts
+        var ctx2 = document.getElementById('loginChart').getContext('2d');
+        var loginChart = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Logins',
+                    data: loginCounts,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    tension: 0.3,
+                    pointRadius: 5,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date',
+                            color: '#666',
+                        },
+                        ticks: {
+                            autoSkip: true,
+                            maxRotation: 45,
+                            minRotation: 30
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Number of Logins',
+                            color: '#666',
+                        },
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+    </script>
+
+</body>
+</html>
+
