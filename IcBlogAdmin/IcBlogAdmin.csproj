@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\UserManage\UserBlog.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.7" />
@@ -24,18 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IcBlog.Infrastructure\IcBlog.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\UserManage\UserBlog.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\UserManage\UserBlog.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Pages\UserManage\UserBlog.cshtml" />
   </ItemGroup>
 
 </Project>

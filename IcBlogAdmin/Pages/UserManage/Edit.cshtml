@@ -74,6 +74,7 @@
                     <td class="truncate-text">@Html.Raw(StringExtensions.StripHtmlAndTruncate(blog.Content, 50))</td>
                     <td>@blog.Category.Name</td>
                     <td>
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@blog.BlogID">
                         <form method="post" asp-page-handler="Delete" asp-route-id="@Model.ApplicationUser.Id">
                             <input type="hidden" name="BlogId" value="@blog.BlogID" />
                             <button type="submit" class="btn btn-sm btn-danger mt-2">Delete</button>

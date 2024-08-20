@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using IcBlog.Infrastructure.Models;
 using IcBlog.Models;
+using IcBlog.Helper;
+using IcBlog.Services;
+
 namespace IcBlog.Controllers
 {
     public class UserAccountController : Controller
@@ -11,12 +14,17 @@ namespace IcBlog.Controllers
         private readonly IUserService _userService;
         private readonly IBlogServices _blogServices;
         private readonly UserManager<ApplicationUser> _userManager;
-
-        public  UserAccountController(IUserService userService, UserManager<ApplicationUser> userManager, IBlogServices blogServices)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly HttpClient _httpClient;
+        private readonly IProfilePictureService _profilePictureService;
+        public  UserAccountController(IUserService userService, UserManager<ApplicationUser> userManager, IBlogServices blogServices, IWebHostEnvironment webHostEnvironment, HttpClient httpClient, IProfilePictureService profilePictureService)
         {
             _userService = userService;
             _userManager = userManager;
             _blogServices = blogServices;
+            _webHostEnvironment = webHostEnvironment;
+            _httpClient = httpClient;
+            _profilePictureService = profilePictureService;
         }
         [Route("user-info")]
         public async Task<IActionResult> Index()
@@ -80,5 +88,36 @@ namespace IcBlog.Controllers
             }
             return View(model);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeAvatar(IFormFile avatarUpload)
+        {
+            if (avatarUpload != null && avatarUpload.Length > 0)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user != null)
+                {
+                    // Call service to save the profile picture
+                    await _profilePictureService.SaveProfilePictureAsync(user.Id, avatarUpload);
+
+                    // Optionally: Display a success message
+                    TempData["SuccessMessage"] = "Profile picture updated successfully.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "User not found.";
+                }
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Invalid image upload.";
+            }
+
+            return RedirectToAction("Index"); // Redirect to the appropriate view
+        }
+
+
+
     }
 }

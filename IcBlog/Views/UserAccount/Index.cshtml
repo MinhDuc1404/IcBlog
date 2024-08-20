@@ -1,7 +1,10 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using IcBlog.Infrastructure.Models
+@using IcBlog.Helper
+@inject UserManager<ApplicationUser> UserManager
+@{
     Layout = "/Views/Shared/_UserLayout.cshtml";
 }
-@using IcBlog.Helper
 @model UserAccountViewModel
 
 @{
@@ -14,7 +17,44 @@
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             <h2>@ViewData["Title"]</h2>
             <a asp-action="Edit" class="btn btn-warning btn-sm" asp-route-id="@Model.UserAccount.Id">Edit</a>
-            </div>
+        </div>
+
+        <!-- Avatar Section -->
+        <div class="card-body text-center">
+            <form asp-action="ChangeAvatar" method="post" enctype="multipart/form-data">
+                <div class="avatar-container" style="display: inline-block; position: relative; text-align: center;">
+                    <!-- Current Avatar -->
+                    <img id="avatarImg"
+                         src="~/UserFiles/@(AppUtilities.LocDau((await UserManager.GetUserAsync(User)).Id))/ProfilePicture.jpg?v=@DateTime.Now.Ticks"
+                         class="avatar rounded-circle"
+                         width="150px"
+                         height="150px"
+                         alt="User Avatar"
+                         style="object-fit: cover; border-radius: 50%;">
+
+                    <!-- Overlay for Change Avatar -->
+                    <div class="avatar-overlay"
+                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); opacity: 0; cursor: pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                        Change Avatar
+                    </div>
+
+                    <!-- File Input -->
+                    <input id="avatarUpload"
+                           type="file"
+                           accept="image/*"
+                           name="avatarUpload"
+                           class="d-none" />
+                </div>
+
+                <!-- Upload Button (Placed outside the avatar container so it's not covered by the overlay) -->
+                <button type="submit"
+                        class="btn btn-primary mt-2"
+                        style="display: block; margin: 0 auto;">
+                    Upload New Picture
+                </button>
+            </form>
+        </div>
+
         <div class="card-body">
             <div class="row mb-3">
                 <div class="col-md-3 font-weight-bold">Full Name:</div>
@@ -48,6 +88,8 @@
     <div class="row">
         @foreach (var item in Model.Blogs)
         {
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-0 shadow">
             <div class="col-xl-4 col-md-6 mb-4">
                 <div class="card border-0 shadow">
                     <img src="~/UserFiles/@($"{AppUtilities.LocDau(item.Author.FirstName)}{AppUtilities.LocDau(item.Author.LastName)}")/@item.BlogID/BlogImage.jpg" class="card-img-top">
@@ -56,6 +98,8 @@
                             <div><h5 class="card-title mb-0">@item.Title</h5></div>
                         </div>
                         <div class="row ml-0">
+                            <div><i class="fas fa-calendar-alt" style="color: gray"></i></div>
+                            <p class="text-muted ml-3 mb-0">Last updated on: @item.DateTime?.ToString()</p>
                             <div><i class="fas fa-calendar-alt" style="color: gray"></i><p class="text-muted ml-3 mb-0">Last updated on: @item.DateTime?.ToString()</p></div>
                     
                         </div>
@@ -81,6 +125,38 @@
                 </div>
             </div>
         }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Avatar hover effect to display "Change Avatar" text
+        const avatarContainer = document.querySelector('.avatar-container');
+        const avatarOverlay = avatarContainer.querySelector('.avatar-overlay');
+        const avatarUpload = document.getElementById('avatarUpload');
+        const avatarImg = document.getElementById('avatarImg');
+
+        avatarContainer.addEventListener('mouseenter', function () {
+            avatarOverlay.style.opacity = 1; // Show overlay
+        });
+
+        avatarContainer.addEventListener('mouseleave', function () {
+            avatarOverlay.style.opacity = 0; // Hide overlay
+        });
+
+        avatarOverlay.addEventListener('click', function () {
+            avatarUpload.click(); // Trigger file input when overlay is clicked
+        });
+
+        // Image preview after selecting a file
+        avatarUpload.addEventListener('change', function (event) {
+            const [file] = this.files;
+            if (file) {
+                avatarImg.src = URL.createObjectURL(file); // Preview the new image
+            }
+        });
+    </script>
+}
         
     </div> 
   @*   <table class="table">
@@ -115,3 +191,4 @@
         </tbody>
     </table> *@
 </div>
+

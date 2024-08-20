@@ -87,16 +87,24 @@ namespace IcBlogAdmin.Pages.UserManage
             {
                 return NotFound();
             }
-            var blog = await _blogContext.Blogs.FindAsync(BlogId);
+
+            // Find the blog and its associated comments
+            var blog = await _blogContext.Blogs
+                .Include(b => b.Comments)
+                .FirstOrDefaultAsync(b => b.BlogID == BlogId);
 
             if (blog != null)
             {
+                // Remove associated comments first
+                _blogContext.Comments.RemoveRange(blog.Comments);
+
+                // Remove the blog
                 _blogContext.Blogs.Remove(blog);
+
                 await _blogContext.SaveChangesAsync();
             }
+
             return RedirectToPage("./Edit", new { id });
         }
-
-
     }
 }
