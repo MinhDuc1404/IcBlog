@@ -33,6 +33,8 @@ namespace IcBlog
 
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IProfilePictureService, ProfilePictureService>();
+            builder.Services.AddHttpClient<IProfilePictureService, ProfilePictureService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

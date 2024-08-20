@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using IcBlog.Infrastructure.Models
+@using IcBlog.Helper
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -9,8 +10,11 @@
 
     if (user != null)
     {
-        <li class="nav-item">
-            <a class="nav-link" asp-controller="UserAccount" asp-action="Index"> @($"{user.FirstName} {user.LastName}!")</a>
+        <li class="nav-item d-flex align-items-center">
+            <a asp-controller="UserAccount" asp-action="Index">
+            <img src="~/UserFiles/@(AppUtilities.LocDau((await UserManager.GetUserAsync(User)).Id))/ProfilePicture.jpg" width="40px" height="40px" alt="" style="border-radius: 50%; object-fit: cover;">
+            <a class="nav-link"> @($"{user.FirstName} {user.LastName}!")</a>
+            </a>
         </li>
     }
     else
@@ -19,7 +23,7 @@
             <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Login" style="color: w">Login</a>
         </li>
     }
 }

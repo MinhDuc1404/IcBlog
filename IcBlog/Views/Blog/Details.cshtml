@@ -35,75 +35,60 @@
                                 <div class="blog-thumb">
                                     <img src="~/UserFiles/@( $"{AppUtilities.LocDau(Model.Blog.Author.FirstName)}{AppUtilities.LocDau(Model.Blog.Author.LastName)}")/@Model.Blog.BlogID/BlogImage.jpg" alt="">
                                 </div>
-                                <div class="down-content">
-                                    <span>@Model.Blog.Category.Name</span>
-                                    <h4>@Model.Blog.Title</h4></a>
-                                    <ul class="post-info">
-                                        <li><a href="#">@($"{Model.Blog.Author.FirstName} {Model.Blog.Author.LastName}")</a></li>
-                                        <li><a href="#">@Model.Blog.DateTime?.ToString("dd/MM/yyyy")</a></li>
-                                    </ul>
-                                    <p>@Html.Raw(Model.Blog.Content) </p>
-                                    <div class="post-options">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <ul class="post-tags">
-                                                    <li><i class="fa fa-tags"></i></li>
-                                                    <li><a href="#">@Model.Blog.Category.Name</a></li>
-
-                                                </ul>
-                                            </div>
-                                            <div class="col-6">
-                                                <ul class="post-share">
-                                                    <li><i class="fa fa-share-alt"></i></li>
-                                                    <li><a href="#">Facebook</a>,</li>
-                                                    <li><a href="#"> Twitter</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="col-lg-12 col-md-10 mx-auto testing" style="word-wrap: break-word;white-space: -moz-pre-wrap;white-space: pre-wrap;">
+                                    @Html.Raw(HttpUtility.HtmlDecode(Model.Blog.Content))
                                 </div>
-                            </div>
+
+                        <div class="tag-option mt-5 clearfix">
+                            <ul class="float-left list-inline">
+                                <li>Tags:</li>
+                                <li class="list-inline-item"><a asp-controller="Blog" asp-action="Index" asp-route-category="@Model.Blog.CategoryID" rel="tag">@Model.Blog.Category.Name</a></li>
+                            </ul>
+
+                            <ul class="float-right list-inline">
+                                <li class="list-inline-item"> Share: </li>
+                                <li class="list-inline-item"><a href="#" target="_blank"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+                                <li class="list-inline-item"><a href="#" target="_blank"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+                                <li class="list-inline-item"><a href="#" target="_blank"><i class="fab fa-pinterest-p" aria-hidden="true"></i></a></li>
+                                <li class="list-inline-item"><a href="#" target="_blank"><i class="fab fa-google-plus" aria-hidden="true"></i></a></li>
+                            </ul>
                         </div>
-                        <!-- Hiển thị bình luận và trả lời -->
-                        <div class="col-lg-12">
-                            <div class="sidebar-item comments">
-                                <div class="sidebar-heading">
-                                    <h2> Bình luận</h2>
-                                </div>
-                                <div class="content">
-                                    <ul>
-                                        @if (Model.Blog.Comments != null && Model.Blog.Comments.Any())
-                                        {
-                                        @foreach(var comment in Model.Blog.Comments.Where(comment => comment.CommentParent is null))
-                                        {
-                                            <li>
-                                                <div class="author-thumb">
-                                                    <img src="assets/images/comment-author-01.jpg" alt="">
-                                                </div>
-                                                <div class="right-content">
-                                                    <h4>@comment.Author.FirstName @comment.Author.LastName<span>@comment.CreatedOn</span></h4>
-                                                    <p>@Html.Raw(comment.Content)</p>
+                    </div>
+                </div>
+            </div>
+                    <div class="col-lg-12 mb-5">
+                        <div class="comment-area card border-0 p-5">
+                            <h4 class="mb-4">@((Model.Blog.Comments?.Count() ?? 0)) Comments</h4>
+                            <ul class="comment-tree list-unstyled">
+                                @foreach (var item in Model.Blog.Comments.Where(comment => comment.CommentParent is null))
+                                {
+                                    <li class="mb-5">
+                                        <div class="comment-area-box">
+                                            <div class="d-flex align-items-center">
+                                            <img src="~/UserFiles/@(AppUtilities.LocDau((await UserManager.GetUserAsync(User)).Id))/ProfilePicture.jpg" width="40px" height="40px" alt="" style="border-radius: 50%; object-fit: cover;">
 
-                                                    @if (user == null)
-                                                    {
-                                                            <a class="reply-btn btn" asp-area="Identity" asp-page="/Account/Login" asp-route-ReturnUrl="~/blog-details.html/@Model.Blog.BlogID">Login to reply</a>
-                                                    }
-                                                    else
-                                                    {
-                                                        <a href="#" onclick="toggleReplyForm(@comment.Id); return false;">Reply</a>
-                                                    }
-                                                   
-                                                </div>
-                                            </li>
-                                        <li class="replied">
-                                            <div class="col-lg-12">
-                                               
-                                                <div id="reply-form-@comment.Id" style="display: none;">
-                                                    <div class="author-thumb">
-                                                        <img src="assets/images/comment-author-02.jpg" alt="">
-                                                    </div>
+                                            <h5 class="mb-1">@($"{item.Author.FirstName} {item.Author.LastName}")</h5>
+                                            </div>
+                                            <div class="comment-meta mt-4 mt-lg-0 mt-md-0 float-lg-right float-md-right">
+                                            @if (user == null)
+                                            {
+                                                <a class="reply-btn btn" asp-area="Identity" asp-page="/Account/Login" asp-route-ReturnUrl="~/Blog/Details/@Model.Blog.BlogID">Login to reply</a>
+                                            }
+                                            else
+                                            {
+                                                    <a href="javascript:void(0);" onclick="toggleReplyForm(@item.Id)"><i class="icofont-reply mr-2 text-muted"></i>Reply |</a>
+                                            }
+                  
+                                            </div>
 
-                                                    <form asp-controller="Blog" asp-action="Comment" method="post">
+                                            <div class="comment-content mt-3">
+                                                <p style="margin-left: 50px;">@Html.Raw(item.Content)</p>
+                                            </div>
+                                            <!-- Reply Form -->
+                                            @if (user != null)
+                                            {
+                                                <div id="reply-form-@item.Id" class="reply-form" style="display: none;">
+                                                    <form asp-controller="Blog" asp-action="Comment" method="post" class="mt-3">
                                                         <input asp-for="Blog.BlogID" readonly hidden />
                                                             <input asp-for="Comment.CommentParentID" value="@comment.Id" readonly hidden />
                                                         <div class="form-group">

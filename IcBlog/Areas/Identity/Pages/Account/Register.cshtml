@@ -1,4 +1,5 @@
-﻿@page
+﻿
+@page
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
@@ -13,17 +14,17 @@
             <h4>Create a new account.</h4>
             <hr />
             <div class="form-floatting mb-3">
-                <label asp-for="Input.Email"></label>
+                <label asp-for="Input.Email" class="fw-bold"></label>
                 <input asp-for="Input.Email" class="form-control" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
             <div class="form-floatting mb-3">
-                <label asp-for="Input.Password"></label>
+                <label asp-for="Input.Password" class="fw-bold"></label>
                 <input asp-for="Input.Password" class="form-control" />
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
             <div class="form-floatting mb-3">
-                <label asp-for="Input.ConfirmPassword"></label>
+                <label asp-for="Input.ConfirmPassword" class="fw-bold"></label>
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
@@ -34,23 +35,24 @@
                 <h4>Who are you?</h4>
                 <hr />
                 <div class="form-floatting mb-3">
-                    <label asp-for="Input.FirstName"></label>
+                    <label asp-for="Input.FirstName" class="fw-bold"></label>
                     <input asp-for="Input.FirstName" class="form-control" />
                     <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                 </div>
                 <div class="form-floatting mb-3">
-                    <label asp-for="Input.LastName"></label>
+                    <label asp-for="Input.LastName" class="fw-bold"></label>
                     <input asp-for="Input.LastName" class="form-control" />
                     <span asp-validation-for="Input.LastName" class="text-danger"></span>
                 </div>
 
                 <div class="form-floatting mb-3">
-                    <label asp-for="Input.Address"></label>
+                    <label asp-for="Input.Address" class="fw-bold"></label>
                     <input asp-for="Input.Address" class="form-control" />
                     <span asp-validation-for="Input.Address" class="text-danger"></span>
                 </div>
+                <div class="fw-bold">Choose Your Avatar</div>
                 <div class="form-floating mb-3">
-                    <label asp-for="Input.ProfilePicture"></label>
+                 
                     <input asp-for="Input.ProfilePicture" type="file" class="form-control" />
                     <span asp-validation-for="Input.ProfilePicture" class="text-danger"></span>
                 </div>
