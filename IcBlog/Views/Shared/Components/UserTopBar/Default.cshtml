@@ -39,7 +39,7 @@
     <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img src="~/UserFiles/@(AppUtilities.LocDau((await UserManager.GetUserAsync(User)).Id))/ProfilePicture.jpg" width="40px" height="40px" alt="" style="border-radius: 50%; object-fit: cover;">
+                <img src="~/UserFiles/@(AppUtilities.LocDau((await UserManager.GetUserAsync(User)).Id))/ProfilePicture.jpg?v=@DateTime.Now.Ticks" width="40px" height="40px" alt="" style="border-radius: 50%; object-fit: cover;">
                 <span class="mr-2 d-none d-lg-inline text-gray-800 small" style="font-weight: 800; margin-left: 10px">
                         @($"{(await UserManager.GetUserAsync(User)).FirstName} {(await UserManager.GetUserAsync(User)).LastName}")
                 </span>
