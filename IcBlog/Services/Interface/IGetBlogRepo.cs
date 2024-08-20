@@ -21,8 +21,10 @@ namespace IcBlog.Services.Interface
         Task<UpdateBlogViewModel> UpdatePost(UpdateBlogViewModel editViewModel, ClaimsPrincipal claimsPrincipal);
 
         Task<BlogDetailsViewModel> CreateComment(BlogDetailsViewModel blogDetails, ClaimsPrincipal claimsPrincipal);
+        Task<BlogAuthorViewModel> GetAuthorView(string id);
 
 
 
-    }
+
+	}
 }

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 using IcBlog.Helper;
 using Microsoft.AspNetCore.Authorization;
+using IcBlog.Infrastructure.Services;
 
 namespace IcBlog.Services
 {
@@ -90,11 +91,30 @@ namespace IcBlog.Services
         public async Task<UpdateBlogViewModel> UpdatePost(UpdateBlogViewModel editViewModel, ClaimsPrincipal claimsPrincipal)
         {
             var blog = await _blogServices.GetBlogAsync(editViewModel.Blog.BlogID);
+            if (blog == null)
+            {
+                throw new Exception($"No blog found with BlogID {editViewModel.Blog.BlogID}");
+            }
 
             blog.Title = editViewModel.Blog.Title;
             blog.Content = editViewModel.Blog.Content;
             blog.DateTime = DateTime.Now;
-
+            var category = await _categoryServices.GetCategoryByNameAsync(editViewModel.Blog.Category.Name);
+            if (category != null)
+            {
+                // Danh mục đã tồn tại, sử dụng CategoryID của danh mục đó
+                blog.CategoryID = category.CategoryID;
+            }
+            else
+            {
+                // Danh mục chưa tồn tại, tạo mới
+                var newCategory = new Category
+                {
+                    Name = editViewModel.Blog.Category.Name
+                };
+                await _categoryServices.AddCategory(newCategory);
+                blog.CategoryID = newCategory.CategoryID;
+            }
             if (editViewModel.BlogImage != null)
             {
                 string webRootPath = _webHostEnvironment.WebRootPath;
@@ -138,6 +158,7 @@ namespace IcBlog.Services
             if (comment.CommentParent != null)
             {
                 comment.CommentParent = await _blogServices.GetCommentAsync(comment.CommentParent.Id);
+                comment.Replies.Add(comment);
             }    
             await _blogServices.AddComment(comment);
   
@@ -151,6 +172,14 @@ namespace IcBlog.Services
             };
           
         }
+        public async Task<BlogAuthorViewModel> GetAuthorView(string id)
+        {
+			var blog = await _blogServices.GetblogByUserIDAsync(id);
+            return new BlogAuthorViewModel
+            {
+                Blogs = blog
+            };
+		}
         private void EnsureFolder(string path)
         {
             string directoryName = Path.GetDirectoryName(path);

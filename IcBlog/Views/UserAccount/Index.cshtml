@@ -90,6 +90,9 @@
         {
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-0 shadow">
+            <div class="col-xl-4 col-md-6 mb-4">
+                <div class="card border-0 shadow">
+                    <img src="~/UserFiles/@($"{AppUtilities.LocDau(item.Author.FirstName)}{AppUtilities.LocDau(item.Author.LastName)}")/@item.BlogID/BlogImage.jpg" class="card-img-top">
                     <div class="card-body">
                         <div class="row" style="margin: 0px auto 10px 0px;">
                             <div><h5 class="card-title mb-0">@item.Title</h5></div>
@@ -97,6 +100,8 @@
                         <div class="row ml-0">
                             <div><i class="fas fa-calendar-alt" style="color: gray"></i></div>
                             <p class="text-muted ml-3 mb-0">Last updated on: @item.DateTime?.ToString()</p>
+                            <div><i class="fas fa-calendar-alt" style="color: gray"></i><p class="text-muted ml-3 mb-0">Last updated on: @item.DateTime?.ToString()</p></div>
+                    
                         </div>
                         <div class="row ml-0" style="bottom: 0;">
                             <div><i class="fas fa-comment" style="color: gray"></i></div>
@@ -152,3 +157,38 @@
         });
     </script>
 }
+        
+    </div> 
+  @*   <table class="table">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Ảnh</th>
+                <th>Tiêu đề</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Blogs)
+            {
+                <tr>
+                    <td>
+                        @(i++)
+                    </td>
+                    <td>
+                        <img src="~/UserFiles/@( $"{AppUtilities.LocDau(item.Author.FirstName)}{AppUtilities.LocDau(item.Author.LastName)}")/@item.BlogID/BlogImage.jpg" alt="Image" style="width: 100px; height: 100px;" />
+                    </td>
+                    <td><a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogID">@item.Title</a></td>
+                    <td>
+                        <form asp-action="Delete" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@item.BlogID" />
+                            <button type="submit" class="btn btn-danger">Xóa</button>
+                        </form>
+                        <a asp-controller="Blog" asp-action="Update" asp-route-id="@item.BlogID" class="btn btn-primary">Chỉnh sửa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table> *@
+</div>
+

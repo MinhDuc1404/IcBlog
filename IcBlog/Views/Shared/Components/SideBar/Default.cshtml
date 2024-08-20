@@ -1,74 +1,51 @@
-﻿@model SideBarViewModel
+﻿@using IcBlog.Helper
+@model SideBarViewModel
 @{
 }
 @* Search *@
-<div class="col-lg-4">
-    <div class="sidebar">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="sidebar-item search">
-                    <form id="search_form" name="gs" method="GET" asp-controller="Blog" asp-action="Search">
-                        <input type="text" name="searching" class="searchText" placeholder="type to search...">
-                    </form>
-                </div>
-            </div>
+            <div class="col-lg-3">
+                <div class="sidebar-wrap">
+                    <div class="sidebar-widget search card p-4 mb-3 border-0">
+                        <form id="search_form" name="gs" method="GET" asp-controller="Blog" asp-action="Search">
+                        <input type="text" class="form-control" name="searching" placeholder="search">
+                        <button type="submit" class="btn btn-main btn-small d-block mt-2">Search</button>
+                        </form>
+                    </div>
 
 @* Blog SideBar *@
-<div class="col-lg-12">
-    <div class="sidebar-item recent-posts">
-        <div class="sidebar-heading">
-            <h2>BÀI VIẾT GẦN ĐÂY</h2>
-        </div>
-        <div class="content">
-            <ul>
-                @foreach (var item in Model.Blogs.Take(3))
-                {
-                    <li>
-                        <a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogID">
-                            <h5>@item.Title</h5>
-                            <span>@item.DateTime?.ToString("dd/MM/yyyy")</span>
-                  
-                        </a>
-                    </li>
-                }
+        <div class="sidebar-widget latest-post card border-0 p-4 mb-3">
+            <h5>Bài viết gần đây</h5>
 
-            </ul>
+            @foreach (var item in Model.Blogs.Take(3))
+            {
+                <div class="media border-bottom py-3">
+               
+                <div class="media-body">
+                    <h6 class="my-2"><a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogID">@item.Title</a></h6>
+                        <span class="text-sm text-muted">@item.DateTime?.ToString("dd/MM/yyyy")</span>
+                </div>
+            </div>
+            }
         </div>
-    </div>
-</div>
 
   @* Category SideBar *@
-<div class="col-lg-12">
-    <div class="sidebar-item categories">
-        <div class="sidebar-heading">
-            <h2>DANH MỤC BÀI VIẾT</h2>
+        <div class="sidebar-widget latest-post card border-0 p-4 mb-3">
+            <h5>Danh Mục</h5>
+
+            @foreach (var item in Model.Blogs.GroupBy(b => b.Category).Select(g => new { Category = g.Key, Count = g.Count() }))
+            {
+                <a asp-controller="Blog" asp-action="Index" asp-route-category="@item.Category.CategoryID">@item.Category.Name (@item.Count)</a>
+            }
         </div>
-        <div class="content">
-            <ul>
-               @foreach(var item in Model.Categories)
-               {
-                    <li><a asp-controller="Blog" asp-action="Index" asp-route-category="@item.CategoryID">- @item.Name</a></li>
-               }
-               
-            </ul>
-        </div>
-    </div>
-</div>
 
 @* Tag SideBar *@
-<div class="col-lg-12">
-    <div class="sidebar-item tags">
-        <div class="sidebar-heading">
-            <h2>Tag Clouds</h2>
+        <div class="sidebar-widget bg-white rounded tags p-4 mb-3">
+            <h5 class="mb-4">Tags</h5>
+            @foreach (var item in Model.Categories)
+            {
+                <a asp-controller="Blog" asp-action="Index" asp-route-category="@item.CategoryID">@item.Name</a>
+            }
+
+           
         </div>
-        <div class="content">
-            <ul>
-                @foreach(var item in Model.Categories)
-                {
-                <li><a asp-controller="Blog" asp-action="Index" asp-route-category="@item.CategoryID">@item.Name</a></li>
-                }
-            </ul>
-        </div>
-    </div>
-</div>
 

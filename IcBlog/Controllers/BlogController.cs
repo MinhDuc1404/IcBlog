@@ -5,6 +5,7 @@ using IcBlog.Models;
 using Microsoft.AspNetCore.Identity;
 using IcBlog.Infrastructure.Services;
 using IcBlog.Infrastructure.Models;
+using System.Reflection.Metadata;
 
 namespace IcBlog.Controllers
 {
@@ -94,14 +95,27 @@ namespace IcBlog.Controllers
             return View(await _blogRepo.GetEditViewModel(id));
         }
         [HttpPost]
+        public async Task<IActionResult> Update(UpdateBlogViewModel updateblog)
+        {
+         
+
+            await _blogRepo.UpdatePost(updateblog, User);
+            
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
         public async Task<IActionResult> Comment(BlogDetailsViewModel blogDetails)
         {
-            var result = await _blogRepo.CreateComment(blogDetails,User);
+            var result = await _blogRepo.CreateComment(blogDetails, User);
             if (result == null)
             {
                 return RedirectToAction("Details", new { blogDetails.Blog.BlogID });
             }
             return RedirectToAction("Details", new { id = result.Blog.BlogID });
         }
-    }
+		public async Task<IActionResult> Author(string id)
+		{
+			return View(await _blogRepo.GetAuthorView(id));
+		}
+	}
 }

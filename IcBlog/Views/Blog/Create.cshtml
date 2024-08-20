@@ -6,9 +6,10 @@
 <div class="container-fluid">
 
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <div class="card mb-4">
                 <form asp-controller="Blog" asp-action="Create" method="post" enctype="multipart/form-data">
+        
                     <div class="card-header">
                         <i class="fas fa-pen-fancy mr-1"></i>
                         Write a Post
@@ -30,7 +31,7 @@
 
                         <div class="form-group">
                             <label>Nội Dung</label>
-                            <textarea asp-for="Blog.Content" class="form-control textarea" rows="8" required ></textarea>
+                            <textarea asp-for="Blog.Content" class="form-control textarea" rows="8" cols="30" required ></textarea>
                             <span asp-validation-for="Blog.Content" class="text-danger"></span>
                         </div>
                         <div class="form-group">
@@ -39,11 +40,20 @@
                                 <option value="">-- Select Category --</option>
                             </select>
                         </div>
-                   
+
                         <div class="form-group">
-                            <label>Hoặc tạo mới danh mục</label>
-                            <input asp-for="NewCategoryName" class="form-control"  />
-                            <span class="text-danger">@ViewData["CategoryExist"]</span>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="createNewCategory" />
+                                <label class="form-check-label" for="createNewCategory">Tạo mới danh mục</label>
+                            </div>
+                        </div>
+
+                        <div id="newCategoryForm" style="display: none;">
+                            <div class="form-group">
+                                <label>Nhập tên danh mục mới</label>
+                                <input asp-for="NewCategoryName" class="form-control" />
+                                <span class="text-danger">@ViewData["CategoryExist"]</span>
+                            </div>
                         </div>
                         <div>
                             <span class="text-danger">@ViewData["CategoryID"]</span>
@@ -76,6 +86,13 @@
         $(".custom-file-input").on("change", function () {
             var fileName = $(this).val().split("\\").pop();
             $(".custom-file-label").addClass("selected").html(fileName);
+        });
+        $("#createNewCategory").on("change", function () {
+            if (this.checked) {
+                $("#newCategoryForm").show();
+            } else {
+                $("#newCategoryForm").hide();
+            }
         });
     </script>
   

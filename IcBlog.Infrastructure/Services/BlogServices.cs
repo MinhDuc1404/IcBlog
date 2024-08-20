@@ -48,6 +48,10 @@ namespace IcBlog.Infrastructure.Services
                  .Include(b => b.Category) // Bao gồm Category
                  .Include(b => b.Author)   // Bao gồm Author
                   .Include(b => b.Comments)
+                  .ThenInclude(b => b.Author)
+                  .Include(b => b.Comments)
+                  .ThenInclude(b=> b.Replies)
+                  .ThenInclude(r => r.Author)
                 .FirstOrDefaultAsync(b => b.BlogID == id);
         }
         public async Task<Blog> AddBlog(Blog blog)
@@ -60,7 +64,9 @@ namespace IcBlog.Infrastructure.Services
         public async Task<List<Blog>> GetblogByUserIDAsync(string userID)
         {
             return await _blogContext.Blogs
-                .Where(b => b.Author.Id == userID)
+				 .Include(b => b.Category)
+				.Include(b => b.Author)
+				.Where(b => b.Author.Id == userID)
                 .OrderByDescending(b=>b.DateTime)
                 .ToListAsync();
         }

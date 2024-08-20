@@ -4,85 +4,83 @@
 @{
     ViewData["Title"] = "IC Home";
 }
-
-<div class="main-banner header-text">
-    <div class="container-fluid">
-        <div class="owl-banner owl-carousel">
-            @foreach (var item in Model.Blogs.Take(5))
-            {
-                <div class="item">
-                    <img src="~/UserFiles/@( $"{AppUtilities.LocDau(item.Author.FirstName)}{AppUtilities.LocDau(item.Author.LastName)}")/@item.BlogID/BlogImage.jpg" width="520px" height="450px" alt="">
-                    <div class="item-content">
-                        <div class="main-content">
-                            <div class="meta-category">
-                                <span>@item.Category.Name</span>
-                            </div>
-                            <a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogID"><h4>@item.Title</h4></a>
-                            <ul class="post-info">
-                                <li><a href="#">@($"{item.Author.FirstName} {item.Author.LastName}")</a></li>
-                                <li><a href="#">@item.DateTime</a></li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-
-    </div>
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="4000">
+	<div class="carousel-inner">
+		@foreach (var item in Model.Blogs)
+		{
+			var isActive = item == Model.Blogs.First() ? "active" : "";
+			<div class="carousel-item @isActive">
+				<div class="overlay-container">
+					<img class="d-block w-100" src="~/UserFiles/@($"{AppUtilities.LocDau(item.Author.FirstName)}{AppUtilities.LocDau(item.Author.LastName)}")/@item.BlogID/BlogImage.jpg" height="520px" alt="Blog Image">
+					<div class="overlay"></div>
+					<div class="carousel-caption d-none d-md-block">
+						<!-- Phần thông tin danh mục (lên đầu) -->
+						<div class="carousel-item-category">
+							<a asp-controller="Blog" asp-action="Index" asp-route-category="@item.CategoryID">
+								@item.Category.Name
+							</a>
+						</div>
+						<a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogID"><h5>@item.Title</h5> </a>
+						<p>@Html.Raw(AppUtilities.ConvertHtmlToPlainText(item.Content.Substring(0,300)) + "...")</p>
+						<div class="carousel-author-item" style="line-height:25px">
+							<a asp-controller="Blog" asp-action="Author" asp-route-id="@item.Author.Id" style="color:#fff">
+								<img  style="width:24px; height:24px; margin: 0px 5px 0px 0px; float:left; border-radius:50%;" src="~/UserFiles/@item.Author.Id/ProfilePicture.jpg" />
+								@item.Author.FirstName @item.Author.LastName
+							</a>
+							</div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+	<a class="carousel-control-prev" href="#carouselExampleControls" style="width:2%" role="button" data-slide="prev">
+		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		<span class="sr-only">Previous</span>
+	</a>
+	<a class="carousel-control-next" href="#carouselExampleControls" style="width:2%" role="button" data-slide="next">
+		<span class="carousel-control-next-icon" aria-hidden="true"></span>
+		<span class="sr-only">Next</span>
+	</a>
 </div>
-<section class="blog-posts">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="all-blog-posts">
-                    <div class="row">
-
-                        @foreach (var item in Model.Blogs.Take(3))
-                        {
-                            <div class="col-lg-12">
-                                <div class="blog-post">
-                                    <div class="blog-thumb">
-                                        <img src="~/UserFiles/@( $"{AppUtilities.LocDau(item.Author.FirstName)}{AppUtilities.LocDau(item.Author.LastName)}")/@item.BlogID/BlogImage.jpg" width="" height="340px" alt="">
-                                    </div>
-                                    <div class="down-content">
-                                        <span>@item.Category.Name</span>
-                                        <a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogID"><h4>@item.Title</h4></a>
-                                        <ul class="post-info">
-                                            <li><a href="#">@($"{item.Author.FirstName} {item.Author.LastName}")</a></li>
-                                            <li><a href="#">@item.DateTime?.ToString("dd/MM/yyyy")</a></li>
-                                        </ul>
-                                        <p> 
-                                            @(
-                                              AppUtilities.ConvertHtmlToPlainText(item.Content.Substring(0, 200)) + "..."
-                                            )
-                                        </p>
-                                        <div class="post-options">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <ul class="post-tags">
-                                                        <li><i class="fa fa-tags"></i></li>
-                                                        <li><a href="#">@item.Category.Name</a></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="col-6">
-                                                    <ul class="post-share">
-                                                        <li><i class="fa fa-share-alt"></i></li>
-                                                        <li><a href="#">Facebook</a>,</li>
-                                                        <li><a href="#"> Twitter</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                        <div class="col-lg-12">
-                            <div class="main-button">
-                                <a href="/blog.html">View All Posts</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<section class="section blog-wrap bg-gray" style="padding: 40px 0">
+	<div class="container-fluid">
+		<div class="row">
+			@if(Model.Blogs != null && Model.Blogs.Any())
+			{
+				foreach (var item in Model.Blogs)
+				{
+				<div class="col-lg-3 col-md-6 mb-5">
+					<div class="blog-item">
+							<div class="blog-item-image">
+								<a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogID">
+								<img src="~/UserFiles/@($"{AppUtilities.LocDau(item.Author.FirstName)}{AppUtilities.LocDau(item.Author.LastName)}")/@item.BlogID/BlogImage.jpg" alt="" class="img-fluid rounded">
+								</a>
+								<!-- Category label -->
+								<div class="blog-item-category">
+									<a asp-controller="Blog" asp-action="Index" asp-route-category="@item.CategoryID">@item.Category.Name</a>
+								</div>
+							</div>
+					<div class="blog-item-content bg-white p-5" style="height:180px">
+					<h3 style="line-height: 28px; font-size:1.3rem;" class="mt-3 mb-3"><a asp-controller="Blog" asp-action="Details" asp-route-id="@item.BlogID">@item.Title</a></h3>
+						<div class="blog-item-meta py-1" style="font-size:15px">
+									<span>
+										<i class="ti-pencil-alt mr-2"></i>
+										<a class="text-muted text-capitalize mr-3" asp-controller="Blog" asp-action="Author" asp-route-id="@item.Author.Id">
+											@($"{item.Author.FirstName} {item.Author.LastName}")
+										</a>
+									</span>
+						<span class="text-black text-capitalize mr-3"><i class="ti-time mr-1"></i>@item.DateTime?.ToString("dd/MM/yyyy")</span>
+						</div>
+					</div>
+				</div>
+			</div>
+				}
+			}
+		</div>
+		<div class="row justify-content-center mt-5">
+			<div class="col-lg-6 text-center">
+				<a asp-controller="Blog" asp-action="Index" class="btn btn-small btn-main btn-round-full">Đọc Thêm</a>
+			</div>
+		</div>
+	</div>
+</section>

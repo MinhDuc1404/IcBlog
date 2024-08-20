@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -71,8 +72,8 @@ namespace IcBlog.Areas.Identity.Pages.Account
             [Display(Name = "Address")]
             public string Address { get; set; }
 
-            [Display(Name = "Profile Picture")]
-            public IFormFile ProfilePicture { get; set; }
+            //[Display(Name = "Profile Picture")]
+            //public IFormFile ProfilePicture { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -98,11 +99,11 @@ namespace IcBlog.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    // Handle profile picture upload
-                    if (Input.ProfilePicture != null)
-                    {
-                        await _profilePictureService.SaveProfilePictureAsync(user.Id, Input.ProfilePicture);
-                    }
+                    //// Handle profile picture upload
+                    //if (Input.ProfilePicture != null)
+                    //{
+                    //    await _profilePictureService.SaveProfilePictureAsync(user.Id, Input.ProfilePicture);
+                    //}
 
                     _logger.LogInformation("User created a new account with password.");
                     await _signInManager.SignInAsync(user, isPersistent: false);
@@ -112,9 +113,11 @@ namespace IcBlog.Areas.Identity.Pages.Account
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
+
             }
 
-            return Page();
+                return Page();
+            }
         }
     }
-}
+
