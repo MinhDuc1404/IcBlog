@@ -139,7 +139,7 @@ namespace IcBlog.Infrastructure.Migrations
 
                     b.HasIndex("CategoryID");
 
-                    b.ToTable("Blogs");
+                    b.ToTable("Blogs", (string)null);
                 });
 
             modelBuilder.Entity("IcBlog.Infrastructure.Models.Category", b =>
@@ -156,7 +156,7 @@ namespace IcBlog.Infrastructure.Migrations
 
                     b.HasKey("CategoryID");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("IcBlog.Infrastructure.Models.Comment", b =>
@@ -191,7 +191,7 @@ namespace IcBlog.Infrastructure.Migrations
 
                     b.HasIndex("CommentParentID");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("IcBlog.Infrastructure.Models.LoginAttempt", b =>
@@ -216,7 +216,7 @@ namespace IcBlog.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LoginAttempts");
+                    b.ToTable("LoginAttempts", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

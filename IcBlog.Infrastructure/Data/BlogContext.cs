@@ -27,10 +27,10 @@ namespace IcBlog.Infrastructure.Data
 
             // Configure Comment relationships
             builder.Entity<Comment>()
-                .HasOne(c => c.Blog)
-                .WithMany(b => b.Comments)
-                .HasForeignKey(c => c.BlogID)
-                .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete for Blogs
+    .HasOne(c => c.Blog)
+    .WithMany(b => b.Comments)
+    .HasForeignKey(c => c.BlogID)
+    .OnDelete(DeleteBehavior.Cascade); // Enable cascade delete
 
             builder.Entity<Comment>()
                 .HasOne(c => c.Author)
@@ -43,6 +43,7 @@ namespace IcBlog.Infrastructure.Data
                 .WithMany(c => c.Replies)
                 .HasForeignKey(c => c.CommentParentID)
                 .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete for nested comments
+
         }
 
         public DbSet<Blog> Blogs { get; set; }
