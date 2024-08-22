@@ -62,6 +62,9 @@ namespace IcBlog.Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<int>("LoginCount")
+                        .HasColumnType("int");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -136,7 +139,7 @@ namespace IcBlog.Infrastructure.Migrations
 
                     b.HasIndex("CategoryID");
 
-                    b.ToTable("Blogs");
+                    b.ToTable("Blogs", (string)null);
                 });
 
             modelBuilder.Entity("IcBlog.Infrastructure.Models.Category", b =>
@@ -153,7 +156,7 @@ namespace IcBlog.Infrastructure.Migrations
 
                     b.HasKey("CategoryID");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("IcBlog.Infrastructure.Models.Comment", b =>
@@ -165,7 +168,6 @@ namespace IcBlog.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AuthorID")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("BlogID")
@@ -189,7 +191,32 @@ namespace IcBlog.Infrastructure.Migrations
 
                     b.HasIndex("CommentParentID");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
+                });
+
+            modelBuilder.Entity("IcBlog.Infrastructure.Models.LoginAttempt", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AttemptedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Success")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LoginAttempts", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -221,13 +248,21 @@ namespace IcBlog.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
+
                             Id = "21c7edad-f82c-4f3d-9474-5d5f628c8176",
+
+                            Id = "8dd897a5-f6ae-4723-95a2-9ef9f359fe12",
+
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
+
                             Id = "656948cd-ab39-4d98-9152-b36be2805b1e",
+
+                            Id = "13ce7c1f-f6cb-42d6-95ad-6955beb71bc2",
+
                             Name = "user",
                             NormalizedName = "user"
                         });
@@ -365,8 +400,7 @@ namespace IcBlog.Infrastructure.Migrations
                     b.HasOne("IcBlog.Infrastructure.Models.ApplicationUser", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("IcBlog.Infrastructure.Models.Blog", "Blog")
                         .WithMany("Comments")
@@ -384,6 +418,17 @@ namespace IcBlog.Infrastructure.Migrations
                     b.Navigation("Blog");
 
                     b.Navigation("CommentParent");
+                });
+
+            modelBuilder.Entity("IcBlog.Infrastructure.Models.LoginAttempt", b =>
+                {
+                    b.HasOne("IcBlog.Infrastructure.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

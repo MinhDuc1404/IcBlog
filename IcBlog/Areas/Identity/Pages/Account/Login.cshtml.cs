@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using IcBlog.Infrastructure.Models;
+using IcBlog.Infrastructure.Data;
 
 namespace IcBlog.Areas.Identity.Pages.Account
 {
@@ -21,14 +22,16 @@ namespace IcBlog.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-
+        private readonly BlogContext _blogContext;
         public LoginModel(SignInManager<ApplicationUser> signInManager,
             ILogger<LoginModel> logger,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            BlogContext blogContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _blogContext = blogContext;
         }
 
         [BindProperty]
@@ -81,8 +84,23 @@ namespace IcBlog.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+
+                if (result.Succeeded && user != null)
                 {
+                    user.LoginCount++;
+                    _blogContext.ApplicationUsers.Update(user); // Update the user in the database
+                    await _blogContext.SaveChangesAsync(); // Save the changes to the database
+
+                    var loginAttempt = new LoginAttempt
+                    {
+                        UserId = user.Id,
+                        AttemptedAt = DateTime.UtcNow,
+                        Success = true
+                    };
+                    _blogContext.LoginAttempts.Add(loginAttempt);
+                    await _blogContext.SaveChangesAsync();
+
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

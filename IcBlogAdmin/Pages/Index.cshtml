@@ -1,10 +1,74 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Main Container -->
+<div class="container mt-4">
+    <!-- Header Section -->
+    <div class="text-center mb-4">
+        <h1 class="display-4 fw-bold text-primary">Admin Dashboard</h1>
+        <p class="lead text-muted">Manage and monitor your application efficiently.</p>
+    </div>
+
+    <!-- Overview Section -->
+    <div class="row mb-4">
+        <!-- User Management -->
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-info shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">User Management</h5>
+                    <p class="card-text">View and manage application users.</p>
+                    <a href="/UserManage" class="btn btn-light">Manage Users</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports -->
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-success shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Reports</h5>
+                    <p class="card-text">Generate and view detailed reports.</p>
+                    <a href="/Reports" class="btn btn-light">View Reports</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-warning shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Settings</h5>
+                    <p class="card-text">Adjust application settings and preferences.</p>
+                    <a href="/Settings" class="btn btn-dark">Settings</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics and Notifications Section -->
+    <div class="row">
+        <!-- Statistics -->
+        <div class="col-md-6 mb-4">
+            <div class="card text-white bg-dark shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">System Statistics</h5>
+                    <p class="card-text">Overview of system performance and usage.</p>
+                    <a asp-area="" asp-page="/UserManage/Statistics" class="btn btn-light">View Statistics</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="col-md-6 mb-4">
+            <div class="card text-white bg-danger shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Notifications</h5>
+                    <p class="card-text">Latest notifications and system alerts.</p>
+                    <a class="btn btn-light" asp-page="/UserManage/Statistic">Check Notifications</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

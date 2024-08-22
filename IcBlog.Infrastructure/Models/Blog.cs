@@ -14,7 +14,7 @@ namespace IcBlog.Infrastructure.Models
 
         public ApplicationUser Author { get; set; }
         [Required(ErrorMessage ="Vui lòng nhập tiêu đề")]
-        [StringLength(50,ErrorMessage ="Độ dài tiêu đề không vượt quá  50 ký tự")]
+        [StringLength(50,ErrorMessage = "Độ dài tiêu đề không vượt quá  50 ký tự")]
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập nội dung")]
